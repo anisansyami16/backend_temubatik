@@ -23,10 +23,4 @@ app = FastAPI(
     lifespan=lifespan
 )
 
-@app.get("/")
-def root():
-    return {
-        "message": "Temu Batik Backend is Running"
-    }
-
 app.include_router(api_router)
