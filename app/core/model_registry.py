@@ -26,3 +26,27 @@ def load_models():
 def get_model(model_name: str):
 
     return MODEL_REGISTRY.get(model_name)
+
+
+def get_backbone_name(model_name: str):
+
+    model_data = get_model(model_name)
+
+    if not model_data:
+        raise ValueError(
+            f"Model {model_name} not found"
+        )
+
+    return model_data["backbone"]
+
+
+def get_last_conv_layer(model_name: str):
+
+    model_data = get_model(model_name)
+
+    if not model_data:
+        raise ValueError(
+            f"Model {model_name} not found"
+        )
+
+    return model_data["last_conv_layer"]

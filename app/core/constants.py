@@ -41,3 +41,17 @@ MODEL_CONFIGS = {
         "last_conv_layer": "conv5_block3_out",
     },
 }
+
+REGION_LABELS = {
+    "top_left": "kiri atas",
+    "top_center": "tengah atas",
+    "top_right": "kanan atas",
+
+    "middle_left": "kiri tengah",
+    "center": "tengah",
+    "middle_right": "kanan tengah",
+
+    "bottom_left": "kiri bawah",
+    "bottom_center": "tengah bawah",
+    "bottom_right": "kanan bawah"
+}

@@ -53,11 +53,13 @@ Pastikan file model sudah tersedia sebelum menjalankan backend.
 
 Contoh struktur:
 
+```
 app/
 └── artifacts/
     └── models/
         ├── MobileNetV2.keras
         └── ResNet50.keras
+```
 
 ---
 
@@ -87,3 +89,57 @@ Jika Gagal pastikan:
 Swagger UI:
 
 `http://127.0.0.1:8000/docs`
+
+
+.
+├── .dockerignore
+├── .env
+├── .gitignore
+├── app
+│   ├── api
+│   │   ├── router.py
+│   │   └── routes
+│   │       ├── debug.py
+│   │       ├── explain.py
+│   │       ├── health.py
+│   │       ├── predict.py
+│   │       └── root.py
+│   ├── artifacts
+│   │   └── models
+│   │       ├── MobileNetV2.keras
+│   │       └── ResNet50.keras
+│   ├── core
+│   │   ├── config.py
+│   │   ├── constants.py
+│   │   ├── logger.py
+│   │   └── model_registry.py
+│   ├── main.py
+│   ├── models
+│   │   └── response
+│   │       └── .gitkeep
+│   ├── schemas
+│   │   ├── explanation.py
+│   │   └── prediction.py
+│   ├── services
+│   │   ├── explanation_service.py
+│   │   ├── gradcam_service.py
+│   │   ├── inference_service.py
+│   │   ├── lime_service.py
+│   │   └── visualization_service.py
+│   ├── temp
+│   │   ├── .gitkeep
+│   │   ├── heatmaps
+│   │   │   └── .gitkeep
+│   │   └── uploads
+│   │       ├── .gitkeep
+│   │       └── f8d74ea3-1980-4abf-88aa-99c010ece4c3.jpg
+│   └── utils
+│       ├── file.py
+│       ├── image.py
+│       ├── preprocessing.py
+│       ├── tensor.py
+│       └── tree.py
+├── Dockerfile
+├── README.md
+├── requirements-lock.txt
+└── requirements.txt
