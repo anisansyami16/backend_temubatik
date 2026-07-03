@@ -110,16 +110,6 @@ def get_focus_percentage(
     )
 
 
-def get_peak_activation(
-    heatmap: np.ndarray
-):
-    
-    return round(
-        float(np.max(heatmap)),
-        4
-    )
-
-
 def get_region_description(
     focus_region: str
 ):
@@ -213,7 +203,6 @@ def build_explanation(
     predicted_class,
     focus_region,
     focus_percentage,
-    peak_activation,
     attention_distribution,
     active_regions
 ):
@@ -251,8 +240,6 @@ def generate_explanation(
 
     focus_percentage = get_focus_percentage(heatmap)
 
-    peak_activation = get_peak_activation(heatmap)
-
     attention_distribution = get_attention_distribution(focus_percentage)
 
     active_regions = count_active_regions(heatmap)
@@ -261,7 +248,6 @@ def generate_explanation(
         predicted_class,
         focus_region,
         focus_percentage,
-        peak_activation,
         attention_distribution,
         active_regions
     )
@@ -270,8 +256,6 @@ def generate_explanation(
         "focus_region": str(focus_region),
 
         "focus_percentage": float(focus_percentage),
-
-        "peak_activation": float(peak_activation),
 
         "attention_distribution": str(attention_distribution),
 
