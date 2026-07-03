@@ -1,8 +1,6 @@
-import uuid
+import base64
 import cv2
 import numpy as np
-
-from app.core.config import HEATMAP_DIR
 
 
 def resize_heatmap(
@@ -22,14 +20,41 @@ def apply_colormap(
     heatmap: np.ndarray
 ):
 
-    heatmap_uint8 = np.uint8(255 * heatmap)
+    heatmap_uint8 = np.uint8(
+        255 * heatmap
+    )
 
-    heatmap_color = cv2.applyColorMap(
+    return cv2.applyColorMap(
         heatmap_uint8,
         cv2.COLORMAP_INFERNO
     )
 
-    return heatmap_color
+
+def build_heatmap(
+    heatmap: np.ndarray,
+    target_shape: tuple
+):
+
+    heatmap = resize_heatmap(
+        heatmap,
+        target_shape
+    )
+
+    threshold = 0.15
+
+    filtered = np.zeros_like(
+        heatmap
+    )
+
+    filtered[
+        heatmap >= threshold
+    ] = heatmap[
+        heatmap >= threshold
+    ]
+
+    return apply_colormap(
+        filtered
+    )
 
 
 def build_overlay(
@@ -37,18 +62,11 @@ def build_overlay(
     heatmap: np.ndarray,
     alpha: float = 0.5
 ):
-    
-    heatmap = resize_heatmap(heatmap, original_image.shape)
 
-    threshold = 0.15
-
-    mask = heatmap >= threshold
-
-    filtered_heatmap = np.zeros_like(heatmap)
-
-    filtered_heatmap[mask] = heatmap[mask]
-
-    heatmap_color = apply_colormap(filtered_heatmap)
+    heatmap_color = build_heatmap(
+        heatmap,
+        original_image.shape
+    )
 
     original_bgr = cv2.cvtColor(
         original_image,
@@ -66,67 +84,39 @@ def build_overlay(
     return overlay
 
 
-def save_overlay(
-    overlay: np.ndarray
-):
-    
-    filename = (
-        f"overlay_{uuid.uuid4()}.jpg"
-    )
-
-    output_path = HEATMAP_DIR / filename
-
-    cv2.imwrite(
-        str(output_path),
-        overlay
-    )
-
-    return output_path
-
-
-def save_heatmap(
-    heatmap: np.ndarray
-):
-    
-    filename = (
-        f"heatmap_{uuid.uuid4()}.jpg"
-    )
-
-    output_path = HEATMAP_DIR / filename
-
-    heatmap_uint8 = np.uint8(255 * heatmap)
-
-    heatmap_color = cv2.applyColorMap(
-        heatmap_uint8,
-        cv2.COLORMAP_INFERNO
-    )
-
-    cv2.imwrite(
-        str(output_path),
-        heatmap_color
-    )
-
-    return output_path
-
-
-def save_original(
+def encode_image(
     image: np.ndarray
 ):
-    
-    filename = (
-        f"original_{uuid.uuid4()}.jpg"
+
+    success, buffer = cv2.imencode(
+        ".jpg",
+        image
     )
 
-    output_path = HEATMAP_DIR / filename
+    if not success:
 
-    image_bgr = cv2.cvtColor(
-        image,
-        cv2.COLOR_RGB2BGR
+        raise ValueError(
+            "Failed to encode image."
+        )
+
+    return base64.b64encode(
+        buffer
+    ).decode("utf-8")
+
+
+def build_visualizations(
+    original_image: np.ndarray,
+    heatmap: np.ndarray
+):
+
+    overlay_image = build_overlay(
+        original_image,
+        heatmap
     )
 
-    cv2.imwrite(
-        str(output_path),
-        image_bgr
-    )
+    return {
 
-    return output_path
+        "overlay_image":
+            encode_image(overlay_image)
+
+    }

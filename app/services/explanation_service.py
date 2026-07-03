@@ -237,9 +237,6 @@ def build_explanation(
         f"heatmap memberikan kontribusi "
         f"terhadap prediksi motif "
         f"{predicted_class}. "
-
-        f"Tingkat aktivasi maksimum "
-        f"mencapai {peak_activation}."
     )
 
 

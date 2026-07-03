@@ -28,7 +28,7 @@ from app.services.gradcam_service import (
 
 from app.services.visualization_service import (
     build_overlay,
-    save_overlay
+    build_visualizations
 )
 
 from app.services.explanation_service import (
@@ -102,12 +102,10 @@ async def explain(
 
     heatmap = gradcam_result["raw_heatmap"]
 
-    overlay_image = build_overlay(
-        original_image=original_image,
-        heatmap=heatmap
+    visualizations = build_visualizations(
+        original_image,
+        heatmap
     )
-
-    overlay_path = save_overlay(overlay_image)
 
     explanation_result = (
         generate_explanation(
@@ -138,5 +136,5 @@ async def explain(
 
         "explanation":explanation_result["explanation"],
 
-        "overlay_image":overlay_path.as_posix
+        "overlay_image":visualizations["overlay_image"]
     }
