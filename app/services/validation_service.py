@@ -3,7 +3,7 @@ from app.services.embedding_similarity_service import (
 )
 
 
-VALID_SIMILARITY = 0.85
+MAX_SIMILARITY = 0.85
 
 MIN_MEAN_TOPK = 0.80
 
