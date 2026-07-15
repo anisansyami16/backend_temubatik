@@ -51,7 +51,7 @@ def validate_embedding(
 
     is_valid = (
 
-        max_similarity >= VALID_SIMILARITY
+        max_similarity >= MAX_SIMILARITY
 
         and
 
